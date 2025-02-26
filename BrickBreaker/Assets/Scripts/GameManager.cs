@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private Ball ball;
     private Paddle paddle;
     private Brick[] bricks;
+    public GameObject gameover;
 
     public int level { get; private set; } = 1;
     public int score { get; private set; } = 0;
@@ -92,7 +93,8 @@ public class GameManager : MonoBehaviour
         score = 0;
         lives = 3;
 
-        LoadLevel(1);
+        // LoadLevel(1);
+        gameover.SetActive(true);
     }
 
     public void OnBrickHit(Brick brick)
@@ -102,6 +104,13 @@ public class GameManager : MonoBehaviour
         if (Cleared()) {
             LoadLevel(level + 1);
         }
+    }
+
+    public void OnclickRetry()
+    {
+       // SceneManager.LoadScene(0);
+        gameover.SetActive(false);
+        ResetLevel();
     }
 
     private bool Cleared()

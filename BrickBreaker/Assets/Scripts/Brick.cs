@@ -3,7 +3,7 @@
 [RequireComponent(typeof(BoxCollider2D))]
 public class Brick : MonoBehaviour
 {
-    public Sprite[] states = new Sprite[0];
+  //  public Sprite[] states = new Sprite[0];
     public int points = 100;
     public bool unbreakable;
 
@@ -26,8 +26,8 @@ public class Brick : MonoBehaviour
 
         if (!unbreakable)
         {
-            health = states.Length;
-            spriteRenderer.sprite = states[health - 1];
+            //health = states.Length;
+           // spriteRenderer.sprite = states[health - 1];
         }
     }
 
@@ -42,7 +42,7 @@ public class Brick : MonoBehaviour
         if (health <= 0) {
             gameObject.SetActive(false);
         } else {
-            spriteRenderer.sprite = states[health - 1];
+           // spriteRenderer.sprite = states[health - 1];
         }
 
         GameManager.Instance.OnBrickHit(this);
