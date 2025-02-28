@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private Paddle paddle;
     private Brick[] bricks;
     public GameObject gameover;
+    public GameObject gamewin;
 
     public int level { get; private set; } = 1;
     public int score { get; private set; } = 0;
@@ -19,18 +20,22 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null) {
+        if (Instance != null)
+        {
             DestroyImmediate(gameObject);
-        } else {
+        }
+        else
+        {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+           // DontDestroyOnLoad(gameObject);
             FindSceneReferences();
         }
     }
 
     private void OnDestroy()
     {
-        if (Instance == this) {
+        if (Instance == this)
+        {
             Instance = null;
         }
     }
@@ -68,9 +73,12 @@ public class GameManager : MonoBehaviour
     {
         lives--;
 
-        if (lives > 0) {
+        if (lives > 0)
+        {
             ResetLevel();
-        } else {
+        }
+        else
+        {
             GameOver();
         }
     }
@@ -83,17 +91,7 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        // Start a new game immediately
-        // You can also load a "GameOver" scene instead
-        NewGame();
-    }
-
-    private void NewGame()
-    {
-        score = 0;
-        lives = 3;
-
-        // LoadLevel(1);
+        // Show the game over screen
         gameover.SetActive(true);
     }
 
@@ -101,23 +99,32 @@ public class GameManager : MonoBehaviour
     {
         score += brick.points;
 
-        if (Cleared()) {
-            LoadLevel(level + 1);
+        if (Cleared())
+        {
+            gamewin.SetActive(true);
+           // LoadLevel(level + 1);
         }
     }
 
     public void OnclickRetry()
     {
-       // SceneManager.LoadScene(0);
+        // Reset game state completely before reloading the scene
+      //  score = 0;
+      //  lives = 3;
+
+        // Deactivate the gameover UI
         gameover.SetActive(false);
-        ResetLevel();
+
+        // Reload the scene, re-initializing the level
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private bool Cleared()
     {
         for (int i = 0; i < bricks.Length; i++)
         {
-            if (bricks[i].gameObject.activeInHierarchy && !bricks[i].unbreakable) {
+            if (bricks[i].gameObject.activeInHierarchy && !bricks[i].unbreakable)
+            {
                 return false;
             }
         }
@@ -125,4 +132,12 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    public void NewGame()
+    {
+        score = 0;
+        lives = 3;
+
+        // Show the game over UI when starting a new game
+        gameover.SetActive(true);
+    }
 }
